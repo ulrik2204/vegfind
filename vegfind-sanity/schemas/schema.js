@@ -5,14 +5,11 @@ import schemaTypes from "all:part:@sanity/base/schema-type";
 
 // We import object and document schemas
 import blockContent from "./blockContent";
+import brand from "./brand";
 import category from "./category";
 import product from "./product";
-import productVariant from "./productVariant";
-import vendor from "./vendor";
-
-import localeBlockContent from "./locale/BlockContent";
-import localeString from "./locale/String";
-import localeText from "./locale/Text";
+import shop from "./shop";
+import supermarketChain from "./supermarketChain";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,14 +21,12 @@ export default createSchema({
     // The following are document types which will appear
     // in the studio.
     product,
-    vendor,
+    supermarketChain,
     category,
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas
     blockContent,
-    localeText,
-    localeBlockContent,
-    localeString,
-    productVariant,
+    shop,
+    brand,
   ]),
 });

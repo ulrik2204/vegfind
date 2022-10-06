@@ -9,6 +9,16 @@ export default {
       type: "string",
     },
     {
+      name: "description",
+      title: "Description",
+      type: "blockContent",
+    },
+    {
+      name: "image",
+      title: "Image",
+      type: "image",
+    },
+    {
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -18,24 +28,25 @@ export default {
       },
     },
     {
-      title: "Default variant",
-      name: "defaultProductVariant",
-      type: "productVariant",
+      name: "type",
+      title: "Type",
+      type: "string",
+      options: {
+        list: [
+          { title: "Vegetarian", value: "vegetarian" },
+          { title: "Vegan", value: "vegan" },
+          { title: "Other", value: "other" },
+        ],
+      },
     },
     {
-      title: "Variants",
-      name: "variants",
-      type: "array",
-      of: [
-        {
-          title: "Variant",
-          type: "productVariant",
-        },
-      ],
+      name: "stockCount",
+      title: "Stock Count",
+      type: "number",
     },
     {
-      title: "Tags",
-      name: "tags",
+      name: "allergens",
+      title: "Allergens",
       type: "array",
       of: [
         {
@@ -43,19 +54,34 @@ export default {
         },
       ],
       options: {
-        layout: "tags",
+        list: [
+          { title: "Gluten", value: "gluten" },
+          { title: "Crustaceans", value: "crustaceans" },
+          { title: "Eggs", value: "eggs" },
+          { title: "Fish", value: "fish" },
+          { title: "Peanuts", value: "peanuts" },
+          { title: "Soybean", value: "soybean" },
+          { title: "Milk", value: "milk" },
+          { title: "Nuts", value: "nuts" },
+          { title: "Celery", value: "celery" },
+          { title: "Mustard", value: "mustard" },
+          { title: "Sulphites", value: "sulphites" },
+          { title: "Sesame seeds", value: "sesame_seeds" },
+          { title: "Lupin", value: "lupin" },
+          { title: "Molluscs", value: "molluscs" },
+        ],
       },
     },
     {
-      name: "vendor",
-      title: "Vendor",
-      type: "reference",
-      to: { type: "vendor" },
-    },
-    {
-      name: "blurb",
-      title: "Blurb",
-      type: "localeString",
+      name: "shops",
+      title: "Shops",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: { type: "shop" },
+        },
+      ],
     },
     {
       name: "categories",
@@ -69,17 +95,28 @@ export default {
       ],
     },
     {
-      name: "body",
-      title: "Body",
-      type: "localeBlockContent",
+      title: "Weight in grams",
+      name: "weight",
+      type: "number",
+    },
+    {
+      title: "Price",
+      name: "price",
+      type: "number",
+    },
+    {
+      name: "brand",
+      title: "Brand",
+      type: "reference",
+      to: { type: "brand" },
     },
   ],
 
   preview: {
     select: {
       title: "title",
-      manufactor: "manufactor.title",
-      media: "defaultProductVariant.images[0]",
+      subtitle: "brand.name",
+      image: "image",
     },
   },
 };

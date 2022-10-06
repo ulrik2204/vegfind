@@ -1,11 +1,11 @@
 export default {
-  name: "vendor",
-  title: "Vendor",
+  name: "supermarketChain",
+  title: "Supermarket Chain",
   type: "document",
   fields: [
     {
-      name: "title",
-      title: "Title",
+      name: "name",
+      title: "Name",
       type: "string",
     },
     {
@@ -13,7 +13,7 @@ export default {
       title: "Slug",
       type: "slug",
       options: {
-        source: "title",
+        source: "name",
         maxLength: 96,
       },
     },
@@ -30,8 +30,8 @@ export default {
   ],
   preview: {
     select: {
-      title: "title",
-      media: "logo",
+      title: "name",
+      logo: "logo",
     },
   },
 };
