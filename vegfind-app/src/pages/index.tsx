@@ -39,7 +39,7 @@ const Home: NextPage<HomeProps> = (props) => {
       <main className={styles.main}>
         {props.products.map((item) => {
           return (
-            <div>
+            <div key={item._id}>
               <div>{item.title}</div>
               <div>
                 <span>{item.brand}</span> <span>{item.type}</span> <span>{item.price} kr</span>
@@ -48,7 +48,6 @@ const Home: NextPage<HomeProps> = (props) => {
           );
         })}
       </main>
-
       <footer className={styles.footer}></footer>
     </div>
   );
