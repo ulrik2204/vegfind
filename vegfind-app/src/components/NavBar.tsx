@@ -2,7 +2,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SpaIcon from "@mui/icons-material/Spa";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -12,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import { ReactElement, useState } from "react";
 
 const pages = ["Products", "Shops", "About"];
+const url = ["/", "/shops", "/about"];
 
 export default function NavBar(): ReactElement {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -76,9 +76,11 @@ export default function NavBar(): ReactElement {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {pages.map((page, i) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography component="a" href={url[i]} textAlign="center">
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -100,17 +102,18 @@ export default function NavBar(): ReactElement {
               textDecoration: "none",
             }}
           >
-            LOGO
+            VEGFIND
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
+            {pages.map((page, i) => (
+              <Typography
+                component="a"
+                href={url[i]}
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ padding: "1rem", color: "white", display: "block" }}
               >
-                {page}
-              </Button>
+                {page.toUpperCase()}
+              </Typography>
             ))}
           </Box>
         </Toolbar>
