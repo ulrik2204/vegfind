@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import PageTemplate from "../components/PageTemplate";
 import sanityClient from "../lib/sanityClient";
-import styles from "../styles/Home.module.css";
 
 type ProductProjected = {
   _id: string;
@@ -26,7 +26,7 @@ type HomeProps = {
 };
 const Home: NextPage<HomeProps> = (props) => {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Vegfind</title>
         <meta
@@ -36,7 +36,7 @@ const Home: NextPage<HomeProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <PageTemplate title="Vegfind">
         {props.products.map((item) => {
           return (
             <div key={item._id}>
@@ -47,9 +47,8 @@ const Home: NextPage<HomeProps> = (props) => {
             </div>
           );
         })}
-      </main>
-      <footer className={styles.footer}></footer>
-    </div>
+      </PageTemplate>
+    </>
   );
 };
 
