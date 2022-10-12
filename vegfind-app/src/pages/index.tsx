@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import PageTemplate from "../components/PageTemplate";
@@ -39,19 +40,30 @@ const Home: NextPage<HomeProps> = (props) => {
       </Head>
 
       <PageTemplate title="Products">
-        {props.products.map((item) => {
-          return (
-            <ProductItem
-              key={item._id}
-              title={item.title}
-              type={item.type}
-              priceNOK={item.price}
-              categories={item.categories}
-              shops={item.shops.map((shop) => shop.name)}
-              imageUrl={item.imageUrl}
-            />
-          );
-        })}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              sm: "1fr",
+              lg: "1fr 1fr 1fr 1fr",
+            },
+            gap: "1rem",
+          }}
+        >
+          {props.products.map((item) => {
+            return (
+              <ProductItem
+                key={item._id}
+                title={item.title}
+                type={item.type}
+                priceNOK={item.price}
+                categories={item.categories}
+                shops={item.shops.map((shop) => shop.name)}
+                imageUrl={item.imageUrl}
+              />
+            );
+          })}
+        </Box>
       </PageTemplate>
     </>
   );
