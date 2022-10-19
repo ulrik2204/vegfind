@@ -105,6 +105,19 @@ export default {
               type: "number",
             },
           ],
+          preview: {
+            select: {
+              title: "shop.name",
+              price: "price",
+              stockCount: "stockCount",
+            },
+            prepare: ({ title, price, stockCount }) => {
+              return {
+                title,
+                subtitle: `Price: ${price}; Stock Count: ${stockCount}`,
+              };
+            },
+          },
         },
       ],
     },
