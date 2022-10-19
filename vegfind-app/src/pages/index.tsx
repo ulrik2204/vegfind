@@ -3,27 +3,8 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import PageTemplate from "../components/PageTemplate";
 import ProductItem from "../components/ProductItem";
+import { ProductProjected } from "../helpers/types";
 import sanityClient from "../lib/sanityClient";
-
-type ProductProjected = {
-  _id: string;
-  title: string;
-  description: string; // This is wrong, it is BlockContent/TypedObject[]
-  type: string;
-  stockCount: number;
-  allergens: string[];
-  shops: {
-    _id: string;
-    name: string;
-  }[];
-  categories: string[];
-  weight: number;
-  price: number;
-  brand: string;
-  updatedAt: string;
-  imageUrl: string;
-};
-
 type HomeProps = {
   products: ProductProjected[];
 };
@@ -51,17 +32,7 @@ const Home: NextPage<HomeProps> = (props) => {
           }}
         >
           {props.products.map((item) => {
-            return (
-              <ProductItem
-                key={item._id}
-                title={item.title}
-                type={item.type}
-                priceNOK={item.price}
-                categories={item.categories}
-                shops={item.shops.map((shop) => shop.name)}
-                imageUrl={item.imageUrl}
-              />
-            );
+            return <ProductItem key={item._id} product={item} />;
           })}
         </Box>
       </PageTemplate>

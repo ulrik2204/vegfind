@@ -1,23 +1,19 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { ProductProjected } from "../helpers/types";
 
 type ProductItemProps = {
-  title: string;
-  type: string;
-  shops: string[];
-  categories: string[];
-  priceNOK: number;
-  imageUrl: string;
+  product: ProductProjected;
 };
 export default function ProductItem(props: ProductItemProps) {
   return (
     <Card sx={{ width: "20rem" }}>
-      <CardMedia component="img" alt="" height="150" image={props.imageUrl} />
+      <CardMedia component="img" alt="" height="150" image={props.product.imageUrl} />
       <CardContent>
-        <Typography variant="h6">{props.title}</Typography>
-        <Typography>{props.type}</Typography>
-        <Typography>Shops: {props.shops.join(", ")}</Typography>
-        <Typography>Price: {props.priceNOK} kr</Typography>
-        <Typography>Categories: {props.categories.join(", ")}</Typography>
+        <Typography variant="h6">{props.product.title}</Typography>
+        <Typography>{props.product.type}</Typography>
+        <Typography>Shops: {props.product.shops.join(", ")}</Typography>
+        <Typography>Price: {props.product.price} kr</Typography>
+        <Typography>Categories: {props.product.categories.join(", ")}</Typography>
       </CardContent>
     </Card>
   );
