@@ -51,16 +51,24 @@ export const getServerSideProps: GetServerSideProps = async () => {
     "slug": slug.current,
     "imageUrl": image.asset->url,
     type,
-    stockCount,
     allergens,
     "shops": shops[] -> {
       _id,
       name
     },
+    "shopsWithProduct": shopsWithProduct[]{
+      _id,
+      "shop": shop -> {
+        _id,
+        name
+      },
+      stockCount,
+      price
+    },
     "categories": categories[]->title,
     weight,
     price,
-    "brand": brand.name,
+    "brand": brand->name,
     "updatedAt": _updatedAt
    }`;
 
