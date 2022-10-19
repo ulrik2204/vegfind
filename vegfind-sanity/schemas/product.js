@@ -41,7 +41,7 @@ export default {
     },
     {
       name: "stockCount",
-      title: "Stock Count",
+      title: "Stock Count #DEPRECATED",
       type: "number",
     },
     {
@@ -74,12 +74,37 @@ export default {
     },
     {
       name: "shops",
-      title: "Shops",
+      title: "Shops #DEPRECATED",
+      type: "array",
+      of: [{ type: "reference", to: { type: "shop" } }],
+    },
+    {
+      name: "shopsWithProduct",
+      title: "Shops With Product",
       type: "array",
       of: [
         {
-          type: "reference",
-          to: { type: "shop" },
+          type: "document",
+          name: "productInShop",
+          title: "Product In Shop",
+          fields: [
+            {
+              name: "shop",
+              title: "Shop",
+              type: "reference",
+              to: { type: "shop" },
+            },
+            {
+              name: "price",
+              title: "Price",
+              type: "number",
+            },
+            {
+              name: "stockCount",
+              title: "Stock Count",
+              type: "number",
+            },
+          ],
         },
       ],
     },
@@ -100,7 +125,7 @@ export default {
       type: "number",
     },
     {
-      title: "Price",
+      title: "Price #DEPRECATED",
       name: "price",
       type: "number",
     },
