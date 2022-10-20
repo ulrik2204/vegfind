@@ -10,9 +10,9 @@ export default function BaseLayout(props: BaseLayoutProps): ReactElement {
     <Box
       sx={{
         backgroundColor: "background.default",
-        height: "100vh",
+        minHeight: "100vh",
         width: "100%",
-        minWidth: "90vw",
+        minWidth: "99vw",
         display: "flex",
         flexFlow: "column",
         alignItems: "center",

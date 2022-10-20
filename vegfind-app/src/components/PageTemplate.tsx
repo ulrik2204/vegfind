@@ -11,8 +11,8 @@ export default function PageTemplate(props: PageContainerProps) {
       component={"main"}
       sx={{
         width: {
-          sm: "95%",
-          lg: "60%",
+          xs: "95%",
+          lg: "70%",
         },
       }}
     >
