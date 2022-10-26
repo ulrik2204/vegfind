@@ -1,14 +1,18 @@
-import { Box } from "@mui/material";
-import type { GetServerSideProps, NextPage } from "next";
+import { Box, Pagination } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import type { NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import PageTemplate from "../components/PageTemplate";
 import ProductItem from "../components/ProductItem";
-import { ProductProjected } from "../helpers/types";
-import sanityClient from "../lib/sanityClient";
-type HomeProps = {
-  products: ProductProjected[];
-};
-const Home: NextPage<HomeProps> = (props) => {
+import { getProductsCountSanity, getProductsSanity } from "../lib/queries";
+
+const PRODUCTS_PAGE_SIZE = 20;
+
+const Home: NextPage = () => {
+  const [page, setPage] = useState(0);
+  const { products, productCount } = useProducts(page, PRODUCTS_PAGE_SIZE);
+  const pagesCount = productCount !== undefined ? Math.ceil(productCount / PRODUCTS_PAGE_SIZE) : 1;
   return (
     <>
       <Head>
@@ -32,10 +36,11 @@ const Home: NextPage<HomeProps> = (props) => {
             gap: "1rem",
           }}
         >
-          {props.products.map((item) => {
+          {products?.map((item) => {
             return <ProductItem key={item._id} product={item} />;
           })}
         </Box>
+        <Pagination color="primary" count={pagesCount} onChange={(_, page) => setPage(page)} />
       </PageTemplate>
     </>
   );
@@ -43,41 +48,16 @@ const Home: NextPage<HomeProps> = (props) => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  // Get the 6 newst posts from sanity
-  const query = `*[_type == "product"] | order(_updatedAt desc) {
-    _id,
-    title,
-    description,
-    "slug": slug.current,
-    "imageUrl": image.asset->url,
-    type,
-    allergens,
-    "shops": shops[] -> {
-      _id,
-      name
-    },
-    "shopsWithProduct": shopsWithProduct[]{
-      _id,
-      "shop": shop -> {
-        _id,
-        name
-      },
-      stockCount,
-      price
-    },
-    "categories": categories[]->title,
-    weight,
-    price,
-    "brand": brand->name,
-    "updatedAt": _updatedAt
-   }`;
-
-  const products: ProductProjected[] = await sanityClient.fetch(query);
-
-  return {
-    props: {
-      products,
-    },
-  };
-};
+function useProducts(offset: number, size: number) {
+  const {
+    data: products,
+    isLoading: isProductsLoading,
+    error: productsError,
+  } = useQuery(["products", offset, size], () => getProductsSanity(offset, size));
+  const {
+    data: productCount,
+    isLoading: isProductsCountLoading,
+    error: productCountLoading,
+  } = useQuery(["productsCount"], getProductsCountSanity);
+  return { products, productCount };
+}
