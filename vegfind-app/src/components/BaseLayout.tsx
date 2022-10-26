@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { ReactElement, ReactNode } from "react";
+import Footer from "./Footer";
 import NavBar from "./NavBar";
 
 type BaseLayoutProps = {
@@ -20,6 +21,7 @@ export default function BaseLayout(props: BaseLayoutProps): ReactElement {
     >
       <NavBar />
       {props.children}
+      <Footer />
     </Box>
   );
 }

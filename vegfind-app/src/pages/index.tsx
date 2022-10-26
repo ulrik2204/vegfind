@@ -40,6 +40,7 @@ const Home: NextPage = () => {
             return <ProductItem key={item._id} product={item} />;
           })}
         </Box>
+        <br />
         <Pagination color="primary" count={pagesCount} onChange={(_, page) => setPage(page)} />
       </PageTemplate>
     </>
