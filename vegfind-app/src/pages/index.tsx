@@ -1,4 +1,11 @@
-import { Box, Pagination, TextField } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Pagination,
+  TextField,
+} from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -11,6 +18,8 @@ import { allergens } from "../helpers/constants";
 import useDebounce from "../helpers/hooks";
 import { Filters } from "../helpers/types";
 import { getProductsCountSanity, getProductsSanity } from "../lib/queries";
+
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const PRODUCTS_PAGE_SIZE = 20;
 
@@ -32,6 +41,7 @@ function useFilterInitialValues() {
 
 const Home: NextPage = () => {
   const [page, setPage] = useState(0);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const [searchString, setSearchString] = useState("");
   const [filterValues, setFilterValues] = useState<Filters | null>(null);
   const debouncedSearchString = useDebounce(searchString);
@@ -43,6 +53,13 @@ const Home: NextPage = () => {
   );
   const filterInitialValues = useFilterInitialValues();
   const pagesCount = productCount !== undefined ? Math.ceil(productCount / PRODUCTS_PAGE_SIZE) : 1;
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+  const handleSubmit = (filters: Filters) => {
+    setFilterValues(filters);
+    setExpanded(false);
+  };
   return (
     <>
       <Head>
@@ -63,10 +80,16 @@ const Home: NextPage = () => {
           sx={{ margin: "1em 0 1em 0" }}
         />
         {filterInitialValues && (
-          <FilterBox
-            filterInitialValues={filterInitialValues}
-            onSubmit={(values) => setFilterValues(values)}
-          />
+          <Accordion
+            sx={{ borderRadius: "3px", marginBottom: "3rem" }}
+            expanded={expanded === "filterbox"}
+            onChange={handleChange("filterbox")}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>Show Filters</AccordionSummary>
+            <AccordionDetails>
+              <FilterBox filterInitialValues={filterInitialValues} onSubmit={handleSubmit} />
+            </AccordionDetails>
+          </Accordion>
         )}
         <Box
           sx={{

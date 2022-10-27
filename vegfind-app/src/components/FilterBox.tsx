@@ -1,8 +1,20 @@
-import { Box, Button, Checkbox, FormLabel, TextField } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import { Field, Form, Formik } from "formik";
 import _ from "lodash";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { BoolDict, Filters } from "../helpers/types";
 
 type FilterBoxProps = {
@@ -15,6 +27,10 @@ const isNumber = (value: unknown): value is number => typeof value === "number";
 const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
 
 export default function FilterBox(props: FilterBoxProps): ReactElement {
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
   return (
     <Box>
       <Formik initialValues={props.filterInitialValues} onSubmit={props.onSubmit}>
@@ -45,21 +61,43 @@ export default function FilterBox(props: FilterBoxProps): ReactElement {
                 );
               else if (isBoolDict(value))
                 return (
-                  <Box key={key} sx={{ marginTop: "1em" }}>
-                    <FormLabel component="legend">{_.startCase(key)}</FormLabel>
-                    <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
-                      {Object.keys(value).map((boolDictKey) => {
-                        const dictValue = value[boolDictKey];
-                        const dictKey = `${key}.${boolDictKey}`;
-                        return (
-                          <span key={dictKey}>
-                            <Field name={dictKey} as={Checkbox} defaultChecked={dictValue} />
-                            {boolDictKey}
-                          </span>
-                        );
-                      })}
-                    </Box>
-                  </Box>
+                  <Accordion
+                    expanded={expanded === key}
+                    onChange={handleChange(key)}
+                    key={key}
+                    sx={{ marginTop: "1em" }}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography>{_.startCase(key)}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <FormLabel component="legend">{_.startCase(key)}</FormLabel>
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "1fr 1fr",
+                            md: "1fr 1fr 1fr",
+                            lg: "1fr 1fr 1fr 1fr",
+                          },
+                        }}
+                      >
+                        {Object.keys(value).map((boolDictKey) => {
+                          const dictValue = value[boolDictKey];
+                          const dictKey = `${key}.${boolDictKey}`;
+                          return (
+                            <FormControlLabel
+                              control={
+                                <Field name={dictKey} as={Checkbox} defaultChecked={dictValue} />
+                              }
+                              label={boolDictKey}
+                              key={dictKey}
+                            />
+                          );
+                        })}
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
                 );
               else return <></>;
             })}
