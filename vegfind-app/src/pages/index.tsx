@@ -33,10 +33,11 @@ const Home: NextPage = () => {
 
       <PageTemplate title="Products">
         <TextField
-          variant="outlined"
+          variant="filled"
           label="Search for products"
           value={searchString}
           onChange={(e) => setSearchString(e.target.value)}
+          sx={{ margin: "1em 0 1em 0" }}
         />
         <Box
           sx={{
@@ -75,7 +76,6 @@ function useProducts(searchString: string, offset: number, size: number) {
     // isLoading: isProductsCountLoading,
     // error: productCountLoading,
   } = useQuery(["productsCount", searchString], () => getProductsCountSanity(searchString));
-  console.log("count", productCount);
 
   return { products, productCount };
 }
