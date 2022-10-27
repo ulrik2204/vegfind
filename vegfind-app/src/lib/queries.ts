@@ -6,7 +6,9 @@ function productsSearch(searchString: string, slice?: { offset: number; size: nu
   const sliceFilter =
     slice === undefined ? "" : `[${slice.offset}..${slice.offset + slice.size - 1}]`;
   return `*[_type == "product" ${
-    searchString === "" ? "" : `&& (title match ${searchStr} || brand->name match ${searchStr}`
+    searchString === ""
+      ? ""
+      : `&& (title match ${searchStr} || brand->name match ${searchStr} || categories[]->title match ${searchStr})`
   }] | order(lower(title) asc)${sliceFilter}`;
 }
 
