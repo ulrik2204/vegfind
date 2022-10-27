@@ -22,6 +22,7 @@ export default function ProductItem(props: ProductItemProps) {
         <Typography>{props.product.brand}</Typography>
         <Typography>{props.product.type}</Typography>
         <Typography>{props.product.categories?.join(", ")}</Typography>
+        <Typography>{props.product.allergens?.join(", ")}</Typography>
         {lowestPrice && <Typography>From {lowestPrice.toFixed(2)} kr</Typography>}
       </CardContent>
     </Card>

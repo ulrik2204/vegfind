@@ -23,3 +23,16 @@ export type ProductProjected = {
   updatedAt?: string;
   imageUrl?: string;
 };
+
+export type BoolDict = {
+  [key: string]: boolean;
+};
+
+export type Filters = {
+  categories: BoolDict;
+  brands: BoolDict;
+  minPrice: number;
+  maxPrice: number;
+  veganOnly: boolean;
+  excludeAllergens: BoolDict;
+};
