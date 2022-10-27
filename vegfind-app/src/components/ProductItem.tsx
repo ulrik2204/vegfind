@@ -8,7 +8,10 @@ type ProductItemProps = {
 export default function ProductItem(props: ProductItemProps) {
   const shops = props.product.shopsWithProduct;
   const lowestPrice = useMemo(
-    () => (shops !== undefined ? Math.min(...shops.map((item) => item.price)) : undefined),
+    () =>
+      shops !== undefined && shops !== null
+        ? Math.min(...shops.map((item) => item.price))
+        : undefined,
     [props],
   );
   return (
