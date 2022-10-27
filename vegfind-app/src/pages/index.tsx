@@ -1,17 +1,24 @@
-import { Box, Pagination } from "@mui/material";
+import { Box, Pagination, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import PageTemplate from "../components/PageTemplate";
 import ProductItem from "../components/ProductItem";
+import useDebounce from "../helpers/hooks";
 import { getProductsCountSanity, getProductsSanity } from "../lib/queries";
 
 const PRODUCTS_PAGE_SIZE = 20;
 
 const Home: NextPage = () => {
   const [page, setPage] = useState(0);
-  const { products, productCount } = useProducts(page, PRODUCTS_PAGE_SIZE);
+  const [searchString, setSearchString] = useState("");
+  const debouncedSearchString = useDebounce(searchString);
+  const { products, productCount } = useProducts(
+    debouncedSearchString,
+    page * PRODUCTS_PAGE_SIZE,
+    PRODUCTS_PAGE_SIZE,
+  );
   const pagesCount = productCount !== undefined ? Math.ceil(productCount / PRODUCTS_PAGE_SIZE) : 1;
   return (
     <>
@@ -25,6 +32,12 @@ const Home: NextPage = () => {
       </Head>
 
       <PageTemplate title="Products">
+        <TextField
+          variant="outlined"
+          label="Search for products"
+          value={searchString}
+          onChange={(e) => setSearchString(e.target.value)}
+        />
         <Box
           sx={{
             display: "grid",
@@ -41,7 +54,7 @@ const Home: NextPage = () => {
           })}
         </Box>
         <br />
-        <Pagination color="primary" count={pagesCount} onChange={(_, page) => setPage(page)} />
+        <Pagination color="primary" count={pagesCount} onChange={(_, page) => setPage(page - 1)} />
       </PageTemplate>
     </>
   );
@@ -49,16 +62,20 @@ const Home: NextPage = () => {
 
 export default Home;
 
-function useProducts(offset: number, size: number) {
+function useProducts(searchString: string, offset: number, size: number) {
   const {
     data: products,
-    isLoading: isProductsLoading,
-    error: productsError,
-  } = useQuery(["products", offset, size], () => getProductsSanity(offset, size));
+    // isLoading: isProductsLoading,
+    // error: productsError,
+  } = useQuery(["products", searchString, offset, size], () =>
+    getProductsSanity(searchString, offset, size),
+  );
   const {
     data: productCount,
-    isLoading: isProductsCountLoading,
-    error: productCountLoading,
-  } = useQuery(["productsCount"], getProductsCountSanity);
+    // isLoading: isProductsCountLoading,
+    // error: productCountLoading,
+  } = useQuery(["productsCount", searchString], () => getProductsCountSanity(searchString));
+  console.log("count", productCount);
+
   return { products, productCount };
 }
