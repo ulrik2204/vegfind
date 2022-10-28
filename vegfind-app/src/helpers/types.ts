@@ -15,7 +15,7 @@ export type ProductProjected = {
       _id: string;
       name: string;
     };
-    price: number;
+    price?: number;
     stockCount: number;
   }[];
   categories?: string[];
@@ -27,17 +27,17 @@ export type ProductProjected = {
 
 export type ShopWithProduct = {
   _id: string;
-  shop: {
+  shop?: {
     _id: string;
-    name: string;
-    imageUrl: string;
-    supermarketChain: string;
-    address: string;
-    city: string;
-    postalCode: number;
+    name?: string;
+    imageUrl?: string;
+    supermarketChain?: string;
+    address?: string;
+    city?: string;
+    postalCode?: number;
   };
-  price: number;
-  stockCount: number;
+  price?: number;
+  stockCount?: number;
 };
 
 export type ProductDetailedProjected = Omit<ProductProjected, "brand" | "shopsWithProduct"> & {

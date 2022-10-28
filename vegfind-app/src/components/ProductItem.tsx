@@ -8,13 +8,14 @@ type ProductItemProps = {
 };
 export default function ProductItem(props: ProductItemProps) {
   const shops = props.product.shopsWithProduct;
-  const lowestPrice = useMemo(
-    () =>
-      shops !== undefined && shops !== null
-        ? Math.min(...shops.map((item) => item.price))
-        : undefined,
-    [props],
-  );
+  const lowestPrice = useMemo(() => {
+    const prices: number[] | undefined = shops
+      ?.map((item) => item?.price ?? Infinity)
+      ?.filter((price) => price !== Infinity);
+    if (prices === undefined || prices.length === 0) return undefined;
+    return prices !== undefined ? Math.min(...prices) : undefined;
+  }, [props]);
+
   return (
     <Link href={`/products/${props.product._id}`}>
       <Card sx={{ cursor: "pointer" }}>
