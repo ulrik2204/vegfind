@@ -1,4 +1,4 @@
-import { Filters, ProductProjected } from "../helpers/types";
+import { Filters, ProductDetailedProjected, ProductProjected } from "../helpers/types";
 import sanityClient from "./sanityClient";
 
 function productsSearch(
@@ -56,13 +56,7 @@ function productsSearch(
   return `*[_type == "product" ${searchBySearchString} ${filterVegan} ${filterMinPrice} ${filterMaxPrice} ${excludeAllergens} ${filterBrands} ${filterCategories}] | order(lower(title) asc)${sliceFilter}`;
 }
 
-const sanityGROQ = {
-  getProducts: (
-    searchString: string,
-    filters: Filters | null,
-    offset: number,
-    size: number,
-  ) => `${productsSearch(searchString, filters, { offset, size })} {
+const productProjection = `{
     _id,
     title,
     description,
@@ -88,9 +82,51 @@ const sanityGROQ = {
     "price": shopsWithProduct[]->price,
     "brand": brand->name,
     "updatedAt": _updatedAt
-   }`,
+   }`;
+
+const productDetailedProjection = `{
+    _id,
+    title,
+    description,
+    "slug": slug.current,
+    "imageUrl": image.asset->url,
+    type,
+    allergens,
+    "shops": shops[] -> {
+      _id,
+      name
+    },
+    "shopsWithProduct": shopsWithProduct[]{
+      _id,
+      "shop": shop -> {
+        _id,
+        name,
+        "imageUrl": image.asset->url,
+        "supermarketChain": supermarketChain->name,
+        address,
+        city,
+        postalCode,
+      },
+      stockCount,
+      price
+    },
+    "categories": categories[]->title,
+    weight,
+    brand->{
+      _id,
+      name,
+      "imageUrl": logo.asset->url,
+    },
+    "updatedAt": _updatedAt
+   }`;
+
+const sanityGROQ = {
+  getProducts: (searchString: string, filters: Filters | null, offset: number, size: number) =>
+    `${productsSearch(searchString, filters, { offset, size })} ${productProjection}`,
   getProductCount: (searchString: string, filters: Filters | null) =>
     `count(${productsSearch(searchString, filters)})`,
+  getProduct: (id: string) =>
+    `*[_type == "product" && _id == "${id}"] ${productDetailedProjection}`,
 };
 
 export function getProductsSanity(
@@ -106,4 +142,11 @@ export function getProductsSanity(
 
 export function getProductsCountSanity(searchString: string, filters: Filters | null) {
   return sanityClient.fetch(sanityGROQ.getProductCount(searchString, filters)) as Promise<number>;
+}
+
+export async function getProductSanity(id: string) {
+  const result = (await sanityClient.fetch(
+    sanityGROQ.getProduct(id),
+  )) as ProductDetailedProjected[];
+  return result[0];
 }

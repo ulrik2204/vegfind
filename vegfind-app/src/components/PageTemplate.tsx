@@ -14,12 +14,14 @@ export default function PageTemplate(props: PageContainerProps) {
           xs: "95%",
           lg: "70%",
         },
+        overflow: "hidden",
       }}
     >
       <Typography
         variant="h1"
         sx={{
           marginTop: "2rem",
+          textOverflow: "ellipsis",
         }}
       >
         {props.title}

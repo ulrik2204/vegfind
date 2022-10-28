@@ -10,8 +10,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { ReactElement, useState } from "react";
 
-const pages = ["Products", "Shops", "About"];
-const url = ["/", "/shops", "/about"];
+const pages = ["Products"]; //, "Shops", "About"];
+const url = ["/"]; // , "/shops", "/about"];
 
 export default function NavBar(): ReactElement {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -90,7 +90,7 @@ export default function NavBar(): ReactElement {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },

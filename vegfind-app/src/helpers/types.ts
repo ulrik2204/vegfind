@@ -1,7 +1,8 @@
+import { TypedObject } from "@portabletext/types";
 export type ProductProjected = {
   _id: string;
   title?: string;
-  description?: string; // This is wrong, it is BlockContent/TypedObject[]
+  description?: TypedObject | TypedObject[]; // This is wrong, it is BlockContent/TypedObject[]
   type?: string;
   allergens?: string[];
   shops?: {
@@ -22,6 +23,30 @@ export type ProductProjected = {
   brand?: string;
   updatedAt?: string;
   imageUrl?: string;
+};
+
+export type ShopWithProduct = {
+  _id: string;
+  shop: {
+    _id: string;
+    name: string;
+    imageUrl: string;
+    supermarketChain: string;
+    address: string;
+    city: string;
+    postalCode: number;
+  };
+  price: number;
+  stockCount: number;
+};
+
+export type ProductDetailedProjected = Omit<ProductProjected, "brand" | "shopsWithProduct"> & {
+  brand: {
+    _id: string;
+    name: string;
+    imageUrl: string;
+  };
+  shopsWithProduct?: ShopWithProduct[];
 };
 
 export type BoolDict = {
