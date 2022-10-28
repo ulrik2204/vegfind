@@ -35,7 +35,7 @@ export default function ProductPage() {
           alt=""
         ></Box>
         <Box>
-          <Typography variant="h5">{data.title.toUpperCase()}</Typography>
+          <Typography variant="h5">{data?.title?.toUpperCase() ?? ""}</Typography>
           <span>
             <Typography>{data.brand.name.toUpperCase()}</Typography>
 

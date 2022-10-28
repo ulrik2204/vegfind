@@ -22,6 +22,7 @@ export default function PageTemplate(props: PageContainerProps) {
         sx={{
           marginTop: "2rem",
           textOverflow: "ellipsis",
+          fontSize: "64px",
         }}
       >
         {props.title}
