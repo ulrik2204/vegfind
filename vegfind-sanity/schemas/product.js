@@ -40,11 +40,6 @@ export default {
       },
     },
     {
-      name: "stockCount",
-      title: "Stock Count #DEPRECATED",
-      type: "number",
-    },
-    {
       name: "allergens",
       title: "Allergens",
       type: "array",
@@ -71,12 +66,6 @@ export default {
           { title: "Molluscs", value: "molluscs" },
         ],
       },
-    },
-    {
-      name: "shops",
-      title: "Shops #DEPRECATED",
-      type: "array",
-      of: [{ type: "reference", to: { type: "shop" } }],
     },
     {
       name: "shopsWithProduct",
@@ -135,11 +124,6 @@ export default {
     {
       title: "Weight in grams",
       name: "weight",
-      type: "number",
-    },
-    {
-      title: "Price #DEPRECATED",
-      name: "price",
       type: "number",
     },
     {
